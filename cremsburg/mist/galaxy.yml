@@ -1,0 +1,22 @@
+namespace: cremsburg
+name: mist
+version: 0.0.1
+readme: README.md
+authors:
+    - Calvin Remsburg <calvin@redtail.consulting>
+description: Ansible Modules
+license:
+    - GPL-2.0-or-later
+tags: 
+    - networking
+    - wireless
+    - juniper
+    - mist
+    - cloud
+dependencies: {}
+repository: https://github.com/cremsburg/Mist-Ansible-Collection
+documentation: https://github.com/cremsburg/Mist-Ansible-Collection/README.md
+homepage: https://github.com/cremsburg/Mist-Ansible-Collection
+issues: https://github.com/cremsburg/Mist-Ansible-Collection/issues
+build_ignore: []
+travis_status_url: https://api.travis-ci.com/cremsburg/Mist-Ansible-Collection.svg?branch=main

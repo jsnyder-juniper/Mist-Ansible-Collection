@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Create a new org-level WLAN
+      cremsburg.mist.mist_wlan:
+        ssid: "Yorke"
+        enabled: true
+        level: "site"
+        site_name: katy
+        vlan_id: 15
+        auth:
+            type: psk
+            psk: juniper123
+        band: both
+        schedule:
+            enabled: true
+            hours:
+                sun: "07:15-19:00"
+                tue: "20:30-20:45"
+        state: "present"
+      register: create_wlan
+
+    - debug:
+        var: create_wlan
