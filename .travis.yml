@@ -1,0 +1,19 @@
+---
+language: python
+python:
+    - "3.6"
+
+# command to install dependencies
+install:
+    - pip install -r tests/test-requirements.txt
+
+# command to run tests
+script:
+    - ansible-galaxy collection build cremsburg/mist/
+    - ansible-galaxy collection install cremsburg.mist:==1.0.11
+    - ansible-lint cremsburg/mist/tests/*.yaml -v
+    - python -m galaxy_importer.main cremsburg-mist-1.0.11.tar.gz
+
+# tell galaxy about new builds
+notifications:
+    webhooks: https://galaxy.ansible.com/api/v1/notifications/
