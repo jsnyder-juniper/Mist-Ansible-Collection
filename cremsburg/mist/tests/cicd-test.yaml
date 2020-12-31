@@ -1,6 +1,6 @@
 ---
 - hosts: localhost
-
+  connection: local
   tasks:
     - name: create a Site Group
       cremsburg.mist.mist_site_groups:
