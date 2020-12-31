@@ -15,5 +15,5 @@ script:
     - python -m galaxy_importer.main cremsburg-mist-0.0.2.tar.gz
 
 # tell galaxy about new builds
-notifications:
-    webhooks: https://galaxy.ansible.com/api/v1/notifications/
+# notifications:
+#     webhooks: https://galaxy.ansible.com/api/v1/notifications/
