@@ -2,7 +2,7 @@
 
 [![N|Solid](https://upload.wikimedia.org/wikipedia/commons/3/31/Juniper_Networks_logo.svg)](https://www.mist.com/)
 
-[![Build Status](https://www.travis-ci.com/cremsburg/mist_ansible_modules.svg?branch=main)](https://www.travis-ci.com/github/cremsburg/mist_ansible_modules)
+[![Build Status](https://www.travis-ci.com/cremsburg/mist_ansible_modules.svg?branch=main)](https://www.travis-ci.com/github/cremsburg/Mist-Ansible-Collection)
 
 ## `Overview`
 

@@ -2,7 +2,7 @@
 
 [![N|Solid](https://upload.wikimedia.org/wikipedia/commons/3/31/Juniper_Networks_logo.svg)](https://www.mist.com/)
 
-[![Build Status](https://www.travis-ci.com/cremsburg/mist_ansible_modules.svg?branch=main)](https://www.travis-ci.com/github/cremsburg/mist_ansible_modules)
+[![Build Status](https://www.travis-ci.com/cremsburg/mist_ansible_modules.svg?branch=main)](https://www.travis-ci.com/github/cremsburg/Mist-Ansible-Collection)
 
 ## `Overview`
 
@@ -33,6 +33,16 @@ After installing the collections, you can call the modules by using their full n
 ```yaml
 ---
 - hosts: localhost
+
+  ### ####################################################
+  ### # make sure you created environmentals on the
+  ### #   ansible host that store your sensative info
+  ### #   in this case, i am using the following
+  ### #     - MIST_API_TOKEN
+  ### #     - MIST_ORG_ID
+  ### #   this prevents me from needing to declare a value
+  ### #   for 'api_token' and 'org_id' in this module
+  ### ####################################################
   tasks:
     - name: create a site
       cremsburg.mist.mist_site:
