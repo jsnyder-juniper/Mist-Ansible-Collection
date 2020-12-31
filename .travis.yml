@@ -10,9 +10,9 @@ install:
 # command to run tests
 script:
     - ansible-galaxy collection build cremsburg/mist/
-    - ansible-galaxy collection install cremsburg.mist:==0.0.1
+    - ansible-galaxy collection install cremsburg.mist:==0.0.2
     - ansible-lint cremsburg/mist/tests/*.yaml -v
-    - python -m galaxy_importer.main cremsburg-mist-0.0.1.tar.gz
+    - python -m galaxy_importer.main cremsburg-mist-0.0.2.tar.gz
 
 # tell galaxy about new builds
 notifications:

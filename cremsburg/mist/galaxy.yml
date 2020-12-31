@@ -1,10 +1,10 @@
 namespace: cremsburg
 name: mist
-version: 0.0.1
+version: 0.0.2
 readme: README.md
 authors:
     - Calvin Remsburg <calvin@redtail.consulting>
-description: Ansible Modules
+description: Ansible Modules for Juniper Mist products
 license:
     - GPL-2.0-or-later
 tags: 

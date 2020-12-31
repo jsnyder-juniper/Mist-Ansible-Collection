@@ -192,7 +192,7 @@ def core(module):
     # ### #   - name: the site's name, entered by the user
     # ### #   - org_id: set by the environmental or within teh module
     # ### #   - rest: this is where we take in AnsibleModule class created earlier
-    # ### #           in the main function, when we inserted our argument spec 
+    # ### #           in the main function, when we inserted our argument spec
     # ### #           into it. we'll use new object for all API calls
     # ### ########################################################################
     name = module.params['name']
@@ -230,7 +230,6 @@ def core(module):
             site['provisioned'] = True
             site['id'] = each['id']
 
-
     # ### ########################################################################
     # ### # if the user set the state to 'absent', then we need to either delete
     # ### #   an existing site, or report back to the user that the site didn't
@@ -245,7 +244,7 @@ def core(module):
 
     # ### ########################################################################
     # ### # if the user set the state to 'present', then we need to either create
-    # ### #   a new site or edit an existing one. 
+    # ### #   a new site or edit an existing one.
     # ### # this logic can get a little harry, so stick with the comments when
     # ### #   you're deep in the woods and need a guiding light
     # ### ########################################################################
@@ -271,8 +270,7 @@ def core(module):
                              notes=module.params['notes'],
                              rftemplate_id=module.params['rftemplate_id'],
                              secpolicy_id=module.params['secpolicy_id'],
-                             timezone=module.params['timezone'],
-                            )
+                             timezone=module.params['timezone'])
             response = rest.post(f"orgs/{org_id}/sites", data=site_data)
             site['id'] = response.json['id']
 
@@ -309,11 +307,11 @@ def core(module):
         # ### ########################################################################
         # ### # if, at any time, the value of site_groups was flipped to true in the
         # ### #   previous loop, we know that the user is looking to add this site
-        # ### #   to an existing site_group. 
+        # ### #   to an existing site_group.
         # ### # this section's goal is to translation a Site Group's names to an ID
         # ### #   to accomplish our goals
         # ### ########################################################################
-        if site_groups == True:
+        if site_groups is True:
 
             # ### ########################################################################
             # ### # create a few more critical objects
@@ -336,9 +334,9 @@ def core(module):
                         id_list.append(current['id'])
 
             # ### ########################################################################
-            # ### # we finally have everything we need. let's create a final object named 
+            # ### # we finally have everything we need. let's create a final object named
             # ### #   payload. it'll be a dictionary with the key of 'sitegroup_ids' and
-            # ### #   the value will be our list. 
+            # ### #   the value will be our list.
             # ### # this will be converted into the exact JSON payload that Mist expects
             # ### ########################################################################
             payload = dict()
@@ -346,7 +344,7 @@ def core(module):
 
             # ### ########################################################################
             # ### # last step, oofta. grab the response object from earlier and set the
-            # ### #   value of site_id to that of it's id key. then we pass it the 
+            # ### #   value of site_id to that of it's id key. then we pass it the
             # ### #   list of site groups in the correct format, created in teh step above
             # ### ########################################################################
             response = rest.put(f"sites/{site['id']}", data=payload)
@@ -358,8 +356,8 @@ def core(module):
 
 def main():
     # ### ########################################################################
-    # ### # this is the main function, did the name give it away? 
-    # ### # we're taking in the Module's argument spec from the MistHelper and 
+    # ### # this is the main function, did the name give it away?
+    # ### # we're taking in the Module's argument spec from the MistHelper and
     # ### #   saving it as a new object named 'argument_spec'.
     # ### # another object is created, this time to the specification defined by
     # ### #   the offical AnsibleModule class, and we pass in the argument_spec.

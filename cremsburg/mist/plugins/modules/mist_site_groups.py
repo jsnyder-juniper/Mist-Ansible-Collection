@@ -111,7 +111,7 @@ def core(module):
     # ### ##############################################################################################
     response = rest.get(f"orgs/{org_id}/sitegroups")
     if response.status_code != 200:
-        module.fail_json(msg=f"Failed to receive information about the current site groups, here is the response information to help you debug : {response.info}")
+        module.fail_json(msg=f"Failed to receive information about the current site groups, here is the response information: {response.info}")
 
     site_groups = response.json
 
@@ -127,7 +127,7 @@ def core(module):
     # ### ##############################################################################################
     # ### # this block of code will validate whether or not the Site Group already exists.
     # ### # create a new empty dictionary called site_group, and give it two keys of 'provisioned' and
-    # ### #   'id', and default values of 'False' and 'None', respectively. 
+    # ### #   'id', and default values of 'False' and 'None', respectively.
     # ### # loop over the returned object from above, and change the values of both keys when a site's
     # ### #   name was a match with what the user had hoped to create. we'll then use this object to
     # ### #   determine how the playbook's next steps are executed (if at all)
@@ -162,13 +162,13 @@ def core(module):
         parameters = module.params.items()
         for key, value in parameters:
             if value is not None:
-                if key != 'api_token' and key !='org_id' and key !='state':
+                if key != 'api_token' and key != 'org_id' and key != 'state':
                     module_parameters[key] = value
 
         # ### ######################################################################################
-        # ### # Simple loop to determine if we need to create a new Site Group (POST) or edit an 
+        # ### # Simple loop to determine if we need to create a new Site Group (POST) or edit an
         # ### #   existing Site Group (PUT).
-        # ### # As of this release, a PUT operation will always return a "Changed". some thoughts 
+        # ### # As of this release, a PUT operation will always return a "Changed". some thoughts
         # ### #   will be given at a later date to make this more accurate.
         # ### ######################################################################################
         if site_group['provisioned'] is True:
@@ -196,8 +196,8 @@ def core(module):
 
 def main():
     # ### ########################################################################
-    # ### # this is the main function, did the name give it away? 
-    # ### # we're taking in the Module's argument spec from the MistHelper and 
+    # ### # this is the main function, did the name give it away?
+    # ### # we're taking in the Module's argument spec from the MistHelper and
     # ### #   saving it as a new object named 'argument_spec'.
     # ### # another object is created, this time to the specification defined by
     # ### #   the offical AnsibleModule class, and we pass in the argument_spec.

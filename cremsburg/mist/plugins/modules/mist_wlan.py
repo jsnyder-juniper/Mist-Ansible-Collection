@@ -119,7 +119,7 @@ options:
                 description:
                     - when type=wep
                     - four 10-character or 26-character hex string
-                    - null can be used. 
+                    - null can be used.
                     - All keys, if provided, have to be in the same length
                 required: false
                 type: list
@@ -332,7 +332,7 @@ options:
         required: false
         type: bool
     enabled:
-        description: 
+        description:
             - determine if this wlan is enabled
             - default is True
         required: false
@@ -448,7 +448,10 @@ options:
                 type: bool
             hours:
                 description:
-                    - time ranges, the key is mon / tue / wed / thu / fri / sat / sun, the value is time range in HH:MM-HH:MM (24-hour format), the minimum resolution is 30 minute
+                    - time ranges
+                    - the key is mon / tue / wed / thu / fri / sat / sun
+                    - the value is time range in HH:MM-HH:MM (24-hour format)
+                    - the minimum resolution is 30 minute
                 type: dict
                 suboptions:
                     sun:
@@ -702,7 +705,7 @@ def core(module):
             # ### ##########################################################################################
             response = rest.get(f"orgs/{org_id}/sites")
             if response.status_code != 200:
-                module.fail_json(msg=f"Failed to receive information about the current sites, here is the response information to help you debug : {response.info}")
+                module.fail_json(msg=f"Failed to receive information about the current sites, here is the response: {response.info}")
 
             sites = response.json
 
@@ -721,11 +724,11 @@ def core(module):
                     if each['name'] == site_name:
                         site_id = each['id']
             except KeyError:
-                module.fail_json(msg=f"You selected a site level WLAN, but provided nothing for the site_id or site-name parameter. Be better : {response.info}")
+                module.fail_json(msg=f"You selected a site level WLAN, but provided neither site_id or site-name parameter: {response.info}")
 
             if site_id == "":
                 module.fail_json(msg=f"You selected that does not exist. Here's the list we got back from Mist: {sites}")
-        
+
         # gather a list of wlans already created at the org-level
         response = rest.get(f"sites/{site_id}/wlans")
         if response.status_code != 200:
@@ -771,7 +774,6 @@ def core(module):
                         wlan_data['vlan_enabled'] = True
                 if value is not None:
                     wlan_data[key] = value
-
 
             if wlan['provisioned'] is False:
                 response = rest.post(f"/sites/{site_id}/wlans", data=wlan_data)

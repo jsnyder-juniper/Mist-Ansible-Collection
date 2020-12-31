@@ -60,7 +60,7 @@ class MistHelper:
         url = self._url_builder(path)
         data = self.module.jsonify(data)
 
-        resp, info = fetch_url(self.module, 
+        resp, info = fetch_url(self.module,
                                url,
                                data=data,
                                headers=self.headers,
@@ -497,7 +497,7 @@ class MistHelper:
                 required=False,
                 type='dict',
                 options=dict(
-                    # got to find a way to use the k/v used by mist api. 
+                    # got to find a way to use the k/v used by mist api.
                     #   can't believe it, but they're using integers as keys
                     #   this won't work right away
                     twentyfour=dict(
@@ -644,4 +644,3 @@ class MistHelper:
                 type='list',
                 elements='str'),
         )
-
