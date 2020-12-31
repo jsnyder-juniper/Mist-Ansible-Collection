@@ -2,8 +2,9 @@ sudo: required
 dist: xenial
 language: python
 python:
-  - '2.7'
-  - '3.5'
+  - '3.6'
+  - '3.7'
+  - '3.8'
 env:
   global:
     - secure: QPxRfKYNisDeGqy3qlGIfa2qCImq70aEee0UuLv3gM8PNzPdDF/wRuNTNfwaYW2aop2oItvCFDB5Ki/aZqgAQuz/sQfRdTz69l1cDs023K4VAKZipZz0WIZvl70fUBCMShUwotqSpYjD7C+B4IJLm+1cj776j56VHuGFetgfQf7jEKiLZAUJEK4gAyjcBPKBBnXlsd3FFYTSkrEyRdzWNfecScSjVCGtE6SZyYVEYy0Z9nh2h99cn55stb6dTYskiur3hjEHniOwSEIHaj4aXmiMCabELRqtc8ZSREWFqTdGx0QgAe7l/Q8rz8uNMM7aO0Q0gpUTM+d/8RHZKLXfzzT0q3REEFJGFgDrvebXreNV7pUru2Q7uid2nCZxJi0CrhSLnP5XEZHta/j7zKuB6yx/HsTPzv/bLITnICw0g3YIVzxUf0eCYWQ3GqAMsduRh13uXdsPbJTkkAZmJJEd9Qp+j5KoiV+fkJL+CCXm58zip4UA2dBSaXrQnkIFH9c9uqku+IRAV26++AGYeDem3BEH4fIkUIxq71fzoxvVoZsbBEHsDCKlmNHk5MNNwNgBy1Hi6kMXpzoqgpSCQn/cOg8hbF0Q6m5l5PTHXCtYP4nA6XZknP0HkkH8Wei3PoR0c79Y9EWcOR047/LLK4BCN+WeH8/MwyxszUCdLQMnElE=
@@ -43,17 +44,11 @@ env:
     - ANSIBLE_VERSION=2.8.2
     - ANSIBLE_VERSION=2.8.1
     - ANSIBLE_VERSION=2.8.0
+    - ANSIBLE_HOST_KEY_CHECKING=False
 jobs:
   include:
     - python: '3.8'
       env: ANSIBLE_VERSION=latest ANSIBLE_LINT_VERSION=latest
-  exclude:
-    - python: '2.7'
-      env: ANSIBLE_VERSION=latest
-    - python: '2.7'
-      env: ANSIBLE_VERSION=2.10.2
-    - python: '2.7'
-      env: ANSIBLE_VERSION=2.10.1
 branches:
   only:
     - main
