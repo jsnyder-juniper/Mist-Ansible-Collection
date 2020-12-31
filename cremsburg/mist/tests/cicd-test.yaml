@@ -1,0 +1,56 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: create a Site Group
+      cremsburg.mist.mist_site_groups:
+        name: jenkins
+        state: present
+
+    - name: create a site
+      cremsburg.mist.mist_site:
+        name: jenkins
+        address: 624 4th Ave, Titusville, FL 32780, USA
+        country_code: US
+        latlng:
+          lat: 28.6047585
+          lng: -80.815304
+        notes: this is a test
+        sitegroups:
+          - "jenkins"
+        state: present
+
+    - name: Create a new site-level WLAN
+      cremsburg.mist.mist_wlan:
+        ssid: "jenkins-test"
+        enabled: true
+        level: "site"
+        site_name: jenkins
+        vlan_id: 15
+        auth:
+            type: psk
+            psk: juniper123
+        band: both
+        schedule:
+            enabled: true
+            hours:
+                sun: "07:15-19:00"
+                tue: "20:30-20:45"
+        state: "present"
+
+    - name: Delete our new site-level WLAN
+      cremsburg.mist.mist_wlan:
+        ssid: "jenkins-test"
+        level: "site"
+        site_name: jenkins
+        state: "absent"
+
+    - name: Delete our new site
+      cremsburg.mist.mist_site:
+        name: jenkins
+        state: "absent"
+
+    - name: Delete our new Site Group
+      cremsburg.mist.mist_site_groups:
+        name: jenkins
+        state: "absent"

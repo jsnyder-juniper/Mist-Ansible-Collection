@@ -1,19 +1,86 @@
----
+sudo: required
+dist: xenial
 language: python
 python:
-    - "3.6"
-
-# command to install dependencies
+  - '2.7'
+  - '3.5'
+env:
+  global:
+    - secure: QPxRfKYNisDeGqy3qlGIfa2qCImq70aEee0UuLv3gM8PNzPdDF/wRuNTNfwaYW2aop2oItvCFDB5Ki/aZqgAQuz/sQfRdTz69l1cDs023K4VAKZipZz0WIZvl70fUBCMShUwotqSpYjD7C+B4IJLm+1cj776j56VHuGFetgfQf7jEKiLZAUJEK4gAyjcBPKBBnXlsd3FFYTSkrEyRdzWNfecScSjVCGtE6SZyYVEYy0Z9nh2h99cn55stb6dTYskiur3hjEHniOwSEIHaj4aXmiMCabELRqtc8ZSREWFqTdGx0QgAe7l/Q8rz8uNMM7aO0Q0gpUTM+d/8RHZKLXfzzT0q3REEFJGFgDrvebXreNV7pUru2Q7uid2nCZxJi0CrhSLnP5XEZHta/j7zKuB6yx/HsTPzv/bLITnICw0g3YIVzxUf0eCYWQ3GqAMsduRh13uXdsPbJTkkAZmJJEd9Qp+j5KoiV+fkJL+CCXm58zip4UA2dBSaXrQnkIFH9c9uqku+IRAV26++AGYeDem3BEH4fIkUIxq71fzoxvVoZsbBEHsDCKlmNHk5MNNwNgBy1Hi6kMXpzoqgpSCQn/cOg8hbF0Q6m5l5PTHXCtYP4nA6XZknP0HkkH8Wei3PoR0c79Y9EWcOR047/LLK4BCN+WeH8/MwyxszUCdLQMnElE=
+    - secure: I1HkOQwfX7W0mKBDCqyzU0wpKTZESauICnZamTBLwIbzWe43aeszZmSK4C831A2UtFkHfq1pzf8R9BN7mBM31tvYo3zd1mbSUBpCF5mbKJ5my+aoWtr6XiGRnm9U14dM2ry64lc3ifEcU5s2BLkT04i6c6ySgNjrr2EwaNbOd9VzKTz+fyulvuiTEjwFIHl3etC7X0KwGcmA2Niw1QVjcP+5JLr0EUepxs9mDU6iSUMP8eLhIU21OtjInZKUOihEBYEwqfJQqlCdL+tHjpMMy21oaXubVxTTgYiA8xlmFuQ/p7Zm3pF6ErUkrLEUXcVg8Q69pVFC8EvH3xwn7YHVZGsWWidT8Xm3ZXLcqKvKA+ySwvWSQ0ec84ZQhe/KpyUsLqGoVL/qfaT0PEGtOzCK0oo+b5PZTnIESQaKviR3x+z1NPS1d4In2bb2crxBlNSZAlG3VtxGXbTHHZGxZjfhRJrbmD7yfyWqE3XJ33hwzArWBt3FwAVps3dynMWQJgeY88KEKNHFoGfFnoTt1Tm6anxEKMk6iPHsdqB44xwYidTqMMYiqq0sVDGJ3H4le4lK/1gViVuKqfhf4Jt4yzKrQc9qhKxAQOn8jTCQYJhN8nNMdqR/7BZYofKfwZP8xunkcRyH6v0Wg9oiUHX2XrqA5zLifzY467Sm2hJpKhV9jAw=
+    - ANSIBLE_VERSION=latest
+    - ANSIBLE_VERSION=2.10.1
+    - ANSIBLE_VERSION=2.10.0
+    - ANSIBLE_VERSION=2.9.14
+    - ANSIBLE_VERSION=2.9.13
+    - ANSIBLE_VERSION=2.9.12
+    - ANSIBLE_VERSION=2.9.11
+    - ANSIBLE_VERSION=2.9.10
+    - ANSIBLE_VERSION=2.9.9
+    - ANSIBLE_VERSION=2.9.8
+    - ANSIBLE_VERSION=2.9.7
+    - ANSIBLE_VERSION=2.9.6
+    - ANSIBLE_VERSION=2.9.5
+    - ANSIBLE_VERSION=2.9.4
+    - ANSIBLE_VERSION=2.9.3
+    - ANSIBLE_VERSION=2.9.2
+    - ANSIBLE_VERSION=2.9.1
+    - ANSIBLE_VERSION=2.9.0
+    - ANSIBLE_VERSION=2.8.16
+    - ANSIBLE_VERSION=2.8.15
+    - ANSIBLE_VERSION=2.8.14
+    - ANSIBLE_VERSION=2.8.13
+    - ANSIBLE_VERSION=2.8.12
+    - ANSIBLE_VERSION=2.8.11
+    - ANSIBLE_VERSION=2.8.10
+    - ANSIBLE_VERSION=2.8.9
+    - ANSIBLE_VERSION=2.8.8
+    - ANSIBLE_VERSION=2.8.7
+    - ANSIBLE_VERSION=2.8.6
+    - ANSIBLE_VERSION=2.8.5
+    - ANSIBLE_VERSION=2.8.4
+    - ANSIBLE_VERSION=2.8.3
+    - ANSIBLE_VERSION=2.8.2
+    - ANSIBLE_VERSION=2.8.1
+    - ANSIBLE_VERSION=2.8.0
+jobs:
+  include:
+    - python: '3.8'
+      env: ANSIBLE_VERSION=latest ANSIBLE_LINT_VERSION=latest
+  exclude:
+    - python: '2.7'
+      env: ANSIBLE_VERSION=latest
+    - python: '2.7'
+      env: ANSIBLE_VERSION=2.10.2
+    - python: '2.7'
+      env: ANSIBLE_VERSION=2.10.1
+branches:
+  only:
+    - main
+before_install:
+  - sudo apt-get update -qq
 install:
-    - pip install -r tests/test-requirements.txt
-
-# command to run tests
+  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible; else pip install
+    ansible==$ANSIBLE_VERSION; fi
+  - |
+    if [ -n "$ANSIBLE_LINT_VERSION" ]; then
+      if [ "$ANSIBLE_LINT_VERSION" = "latest" ]; then
+        pip install ansible-lint;
+      else
+        pip install ansible-lint==$ANSIBLE_LINT_VERSION;
+      fi
+    fi
+  - pip install galaxy-importer
 script:
-    - ansible-galaxy collection build cremsburg/mist/
-    - ansible-galaxy collection install cremsburg.mist:==0.0.2
-    - ansible-lint cremsburg/mist/tests/*.yaml -v
-    - python -m galaxy_importer.main cremsburg-mist-0.0.2.tar.gz
-
-# tell galaxy about new builds
-# notifications:
-#     webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  - ansible-galaxy collection build cremsburg/mist/
+  - ansible-galaxy collection install cremsburg.mist:==0.0.2
+  - ansible-playbook -i cremsburg/mist/tests/inventory.yaml cremsburg/mist/tests/mist_site_groups.yaml --syntax-check
+  - ansible-playbook -i cremsburg/mist/tests/inventory.yaml cremsburg/mist/tests/mist_site.yaml  --syntax-check
+  - ansible-playbook -i cremsburg/mist/tests/inventory.yaml cremsburg/mist/tests/mist_wlan.yaml --syntax-check
+  - ansible-lint cremsburg/mist/tests/*.yaml -v
+  - ansible-playbook -i cremsburg/mist/tests/inventory.yaml cremsburg/mist/tests/cicd-test.yaml -e MIST_API_TOKEN=MIST_API_TOKEN -e MIST_ORG_ID=MIST_ORG_ID
+notifications:
+  email: false
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  slack:
+    secure: r06Z19kGBXZCBYDsBOg8V3ljFmQzX9miin8DbALIRnu8SiYZhPdx5Xt5nEs1S1DGMSqG+C9lTzb/KaKZWE07PUqyeQSucLe1GdzgwLpZyrDEGi7tWAWDrIKy/d/QLOxtIOwanBhK8NIuifyyKVcddgUkowYb6NOeav2WcVrYNC11BX1hZKmPCSA8ab11WIY3ffH45O7O3wycKlOzlvmf5AO3f6qrdG6EjAYihHeQ7DtMXfeeCNzhGC3r50Ta8zE67D2AMb08aKiHXOaXaVG06KEqWcipE2bL/3Yu8WN/ud5DFsYznOUTJr9wTiZm/Hz9AjhsxC1TV+4bDLOQsPNjVajui3Ed3sUBZhtHX48PcOmnBRAfFBjah6KdPEDNeYwU/9n3r8MfcpzZJZycNfKicFgGTUefUUgNmZ3JcBiQkvh0/SUkgVH7TVkRS//dHkicbGqNMU5QWh4Nb75xCGzmiZOlHOuzETblZO+GtIifvFQh46G1LV+gRosFDQIjSh1vpF7MmKmghBWbnfdFDpZDi2pYeiIuSgd1/wG7X+wybRlN30XozTYU73LAlgZroaoVuFsj2G8H1Dg6MHf/51sSkafN+ybaX3RdkZFFqO2Su+6HeFlrtf64Qv1SL3LjDdkrscowTmNetfETXmp7kRoTZetnZJT6ffBL12aKtqlcDa4=
