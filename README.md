@@ -20,9 +20,9 @@ Here is a short list of modules included within the collection, expect feature p
 
 Name | Description
 ---- | -----------
-[cremsburg.mist.mist_site](https://github.com/cremsburg/mist_ansible_modules/blob/main/cremsburg/mist/docs/cremsburg.mist.mist_site.rst)|Manage the lifecycle of a site
-[cremsburg.mist.mist_site_groups](https://github.com/cremsburg/mist_ansible_modules/blob/main/cremsburg/mist/docs/cremsburg.mist.mist_site_groups.rst)|Manage the Site Groups of your organization
-[cremsburg.mist.mist_wlan](https://github.com/cremsburg/mist_ansible_modules/blob/main/cremsburg/mist/docs/cremsburg.mist.mist_wlan.rst)|Manage the lifecycle of a WLAN
+[cremsburg.mist.mist_site](https://github.com/cremsburg/Mist-Ansible-Collection/blob/main/cremsburg/mist/docs/cremsburg.mist.mist_site.rst)|Manage the lifecycle of a site
+[cremsburg.mist.mist_site_groups](https://github.com/cremsburg/Mist-Ansible-Collection/blob/main/cremsburg/mist/docs/cremsburg.mist.mist_site_groups.rst)|Manage the Site Groups of your organization
+[cremsburg.mist.mist_wlan](https://github.com/cremsburg/Mist-Ansible-Collection/blob/main/cremsburg/mist/docs/cremsburg.mist.mist_wlan.rst)|Manage the lifecycle of a WLAN
 
 ## 🚀 `Executing the playbook`
 
