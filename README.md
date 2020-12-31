@@ -1,6 +1,6 @@
 # Juniper Mist Ansible Modules
 
-[![N|Solid](https://github.com/cremsburg/Mist-Ansible-Collection/static/images/Mist-Juniper-Logo-Full-Color.svg)](https://www.mist.com/)
+[![N|Solid](https://raw.githubusercontent.com/cremsburg/Mist-Ansible-Collection/main/static/images/Mist-Juniper-Logo-Full-Color.svg)](https://www.mist.com/)
 
 [![Build Status](https://api.travis-ci.com/cremsburg/Mist-Ansible-Collection.svg?branch=main)](https://travis-ci.com/github/cremsburg/Mist-Ansible-Collection)
 
