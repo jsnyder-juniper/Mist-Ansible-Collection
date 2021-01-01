@@ -196,10 +196,10 @@ EXAMPLES = r'''
         name: Katy-SW1
         id: 00000000-0000-0000-1000-123456789010
         site_id: 71168e39-1234-1234-1234-123456789010
-        ip_config: 
+        ip_config:
             type: dhcp
             network: default
-        networks: 
+        networks:
           - name: home
             vlan_id: "91"
         port_config:
@@ -223,13 +223,13 @@ EXAMPLES = r'''
         name: Katy-SW1
         id: 00000000-0000-0000-1000-123456789010
         site_id: 71168e39-1234-1234-1234-123456789010
-        ip_config: 
+        ip_config:
           type: dhcp
           network: default
         oob_ip_config:
           type: dhcp
           network: default
-        networks: 
+        networks:
           - name: home
             vlan_id: "91"
           - name: devops
@@ -375,7 +375,7 @@ def core(module):
     # ### #################################################################################
     # ### # change up some of the parameters to make it Mist API friendly, specifically the
     # ### #   networks will be translated from a list into a dictionary. this is to address
-    # ### #   the fact that the API uses the name of a network as the key, and that's 
+    # ### #   the fact that the API uses the name of a network as the key, and that's
     # ### #   simply impossible to address as an Ansible argument spect
     # ### #################################################################################
     mist_friendly_networks = dict()
