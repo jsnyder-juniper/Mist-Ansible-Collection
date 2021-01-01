@@ -7,13 +7,13 @@
         name: Katy-SW1
         id: 00000000-0000-0000-1000-8403280bd289
         site_name: Katy
-        ip_config: 
+        ip_config:
           type: dhcp
           network: default
         oob_ip_config:
           type: dhcp
           network: default
-        networks: 
+        networks:
           - name: home
             vlan_id: "91"
           - name: devops
