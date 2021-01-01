@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright: (c) 2020, Calvin Remsburg (@cremsburg) <cremsburg@gmail.com>
+# Copyright: (c) 2020, Calvin Remsburg (@cremsburg) <cremsburg@protonmail.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -166,6 +166,166 @@ class MistHelper:
                 elements='str'),
             state=dict(
                 required=True,
+                type='str'),
+        )
+
+    @staticmethod
+    def mist_wired_spec():
+        return dict(
+            additional_config_cmds=dict(
+                required=False,
+                type='list',
+                elements='str'),
+            api_token=dict(
+                required=True,
+                fallback=(env_fallback, ['MIST_API_KEY', 'MIST_API_TOKEN']),
+                no_log=True,
+                type='str'),
+            disable_auto_config=dict(
+                required=False,
+                type='bool'),
+            id=dict(
+                required=False,
+                type='str'),
+            ip_config=dict(
+                required=False,
+                type='dict',
+                options=dict(
+                    type=dict(
+                        required=False,
+                        type='str'),
+                    network=dict(
+                        required=False,
+                        type='str'),
+                    )
+                ),
+            mac=dict(
+                required=False,
+                type='str'),
+            model=dict(
+                required=False,
+                type='str'),
+            name=dict(
+                required=True,
+                type='str'),
+            networks=dict(
+                required=False,
+                type='list',
+                elements='dict',
+                options=dict(
+                    name=dict(
+                        required=False,
+                        type='str'),
+                    vlan_id=dict(
+                        required=False,
+                        type='str'),
+                    ),
+                ),
+            notes=dict(
+                required=False,
+                type='str'),
+            oob_ip_config=dict(
+                required=False,
+                type='dict',
+                options=dict(
+                    type=dict(
+                        required=False,
+                        type='str'),
+                    network=dict(
+                        required=False,
+                        type='str'),
+                    )
+                ),
+            org_id=dict(
+                required=True,
+                fallback=(env_fallback, ['MIST_ORG_ID']),
+                type='str'),
+            port_config=dict(
+                required=False,
+                type='list',
+                elements='dict',
+                options=dict(
+                    name=dict(
+                        required=False,
+                        type='str'),
+                    profile=dict(
+                        required=False,
+                        type='str'),
+                    ),
+                ),
+            port_profiles=dict(
+                required=False,
+                default=[],
+                type='list',
+                elements='dict',
+                options=dict(
+                    name=dict(
+                        required=True,
+                        type='str'),
+                    all_networks=dict(
+                        required=False,
+                        type='bool'),
+                    disabled=dict(
+                        required=False,
+                        type='bool'),
+                    duplex=dict(
+                        required=False,
+                        type='str'),
+                    mac_limit=dict(
+                        required=False,
+                        type='int'),
+                    mode=dict(
+                        required=False,
+                        type='str'),
+                    networks=dict(
+                        required=False,
+                        type='list'),
+                    poe_disabled=dict(
+                        required=False,
+                        type='bool'),
+                    port_auth=dict(
+                        required=False,
+                        type='str'),
+                    port_network=dict(
+                        required=False,
+                        type='str'),
+                    speed=dict(
+                        required=False,
+                        type='str'),
+                    stp_edge=dict(
+                        required=False,
+                        type='bool'),
+                    voip_network=dict(
+                        required=False,
+                        type='str'),
+                    ),
+                ),
+            port_usages=dict(
+                required=False,
+                type='dict',
+                options=dict(
+                    name=dict(
+                        required=False,
+                        type='dict',
+                        options=dict(
+                            vlan_id=dict(
+                                required=False,
+                                type='str'),
+                            )
+                        ),
+                    ),
+                ),
+            role=dict(
+                required=False,
+                type='str'),
+            serial=dict(
+                required=False,
+                type='str'),
+            site_id=dict(
+                required=False,
+                type='str'),
+            site_name=dict(
+                required=False,
                 type='str'),
         )
 

@@ -1,0 +1,44 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: configure a switch
+      cremsburg.mist.mist_wired:
+        name: Katy-SW1
+        id: 00000000-0000-0000-1000-8403280bd289
+        site_name: Katy
+        ip_config:
+          type: dhcp
+          network: default
+        oob_ip_config:
+          type: dhcp
+          network: default
+        networks:
+          - name: home
+            vlan_id: "91"
+          - name: devops
+            vlan_id: "101"
+        port_config:
+          - name: ge-0/0/0
+            profile: mist-ap
+          - name: ge-0/0/1
+            profile: home
+        port_profiles:
+          - name: home
+            mode: access
+            disabled: False
+            port_network: "home"
+            stp_edge: True
+            poe_disabled: True
+          - name: mist-ap
+            mode: trunk
+            all_networks: True
+            disabled: False
+            port_network: "home"
+            stp_edge: True
+            poe_disabled: False
+      register: result
+
+    - name: debug output
+      debug:
+        var: result
