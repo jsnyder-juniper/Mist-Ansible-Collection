@@ -13,7 +13,7 @@ short_description: Manage lifecycle of Site Groups within your Mist organization
 
 # If this is part of a collection, you need to use semantic versioning,
 # i.e. the version is of the form "2.5.0" and not "2.4".
-version_added: "0.0.4"
+version_added: "0.0.5"
 
 description: This module will leverage Mist's REST API to automate the lifecycle management of your Site Groups in Mist.
 
