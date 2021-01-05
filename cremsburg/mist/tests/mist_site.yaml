@@ -2,16 +2,16 @@
 - hosts: localhost
 
   tasks:
-    - name: create a site
+    - name: "create a site"
       cremsburg.mist.mist_site:
-        name: katy
-        address: 5000 Katy Mills Cir, Katy, TX 77494, USA
-        country_code: US
+        name: "katy"
+        address: "5000 Katy Mills Cir, Katy, TX 77494, USA"
+        country_code: "US"
         latlng:
           lat: 29.7785301
           lng: -95.8154901
-        notes: this is a test
+        notes: "this is a test"
         sitegroups:
           - "retail"
-        state: present
+        state: "present"
       register: result

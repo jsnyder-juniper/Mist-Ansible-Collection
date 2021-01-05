@@ -31,11 +31,11 @@ Here is a basic example of using the module to configure your WLANs at the site 
     ### #   for 'api_token' and 'org_id' in this module
     ### ####################################################
     tasks:
-        - name: Create a new org-level WLAN
+        - name: Create a new Site WLAN
           cremsburg.mist.mist_wlan:
               ssid: "Yorke"
               enabled: true
-              level: "site"
+              type: "site"
               site_name: katy
               vlan_id: 15
               auth:
@@ -326,7 +326,7 @@ If you'd like to see the options available for you within the module, have a loo
             legacy_overds=dict(
                 required=False,
                 type='bool'),
-            level=dict(
+            type=dict(
                 required=False,
                 choices=['org', 'site'],
                 type='str'),
@@ -495,6 +495,9 @@ If you'd like to see the options available for you within the module, have a loo
             state=dict(
                 required=False,
                 choices=['absent', 'present'],
+                type='str'),
+            template_id=dict(
+                required=False,
                 type='str'),
             use_eapol_v1=dict(
                 required=False,

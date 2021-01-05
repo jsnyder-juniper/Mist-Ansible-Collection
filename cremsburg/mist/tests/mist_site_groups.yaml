@@ -2,7 +2,7 @@
 - hosts: localhost
 
   tasks:
-    - name: create a Site Group
+    - name: "create a Site Group"
       cremsburg.mist.mist_site_groups:
-        name: retail
-        state: present
+        name: "retail"
+        state: "present"

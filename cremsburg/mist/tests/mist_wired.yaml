@@ -2,42 +2,53 @@
 - hosts: localhost
 
   tasks:
-    - name: configure a switch
+    - name: "configure a switch"
       cremsburg.mist.mist_wired:
-        name: Katy-SW1
-        site_name: Katy
+        name: "jackson-sw2"
+        site_name: "Jackson"
         ip_config:
-          type: dhcp
-          network: default
+          type: "dhcp"
+          network: "default"
         oob_ip_config:
-          type: dhcp
-          network: default
+          type: "dhcp"
+          network: "default"
         networks:
-          - name: home
+          - name: "default"
+            vlan_id: "1"
+          - name: "home"
             vlan_id: "91"
-          - name: devops
+          - name: "devops"
             vlan_id: "101"
         port_config:
-          - name: ge-0/0/0
-            profile: mist-ap
-          - name: ge-0/0/1
-            profile: home
+          - name: "ge-0/0/0"
+            profile: "trunk"
+          - name: "ge-0/0/1-10"
+            profile: "home"
+          - name: "ge-0/0/11"
+            profile: "mist-ap"
         port_profiles:
-          - name: home
-            mode: access
+          - name: "home"
+            mode: "access"
             disabled: False
             port_network: "home"
             stp_edge: True
             poe_disabled: True
-          - name: mist-ap
-            mode: trunk
+          - name: "mist-ap"
+            mode: "trunk"
             all_networks: True
             disabled: False
             port_network: "home"
             stp_edge: True
             poe_disabled: False
+          - name: "trunk"
+            mode: "trunk"
+            all_networks: True
+            disabled: False
+            port_network: "default"
+            stp_edge: False
+            poe_disabled: True
       register: result
 
-    - name: debug output
+    - name: "debug output"
       debug:
         var: result

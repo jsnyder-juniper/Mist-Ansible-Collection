@@ -358,7 +358,7 @@ options:
     legacy_overds:
         required: false
         type: bool
-    level:
+    type:
         description:
             - select if this WLAN applies to a site, an org, or something else
         required: false
@@ -510,6 +510,18 @@ options:
         required: true
         choices: ['absent', 'present']
         type: str
+    template_id:
+        required: false
+        type: str
+    template_name:
+        required: false
+        type: str
+    type:
+        required: false
+        choices:
+          - template
+          - site
+        type: str
     use_eapol_v1:
         required: true
         type: bool
@@ -574,10 +586,10 @@ EXAMPLES = r'''
 ### # assumes org_id and api_token are stored as environmentals
 ### # on the Ansible host, MIST_ORG_ID and MIST_API_KEY respectively
 ### #################################################################
-- name: Create a new org-level WLAN
+- name: Create a new Config Template WLAN
   cremsburg.mist.mist_wlan:
     ssid: "Yorke"
-    level: "org"
+    type: "template"
     vlan_id: 15
     state: "present"
 
@@ -589,19 +601,20 @@ EXAMPLES = r'''
 - name: Delete an existing site-level site
   cremsburg.mist.mist_wlan:
     ssid: "Yorke"
-    level: "site"
+    type: "site"
     state: "absent"
 
 ### #################################################################
-### # Create the whole enchilla of the wlan
+### # passes template_id to associate this WLAN to a Config Template
 ### # passes org_id and api_token in plain text
 ### # please don't do this, protect your secrets
 ### #################################################################
-- name: Create a new org-level WLAN
+- name: Create a new Config Template WLAN
   cremsburg.mist.mist_wlan:
     ssid: "Yorke"
     enabled: true
-    level: "org"
+    type: "template"
+    template_id: 12345678-1234-5678-0123-012345678910
     vlan_id: 15
     auth:
         type: psk
@@ -629,64 +642,145 @@ def core(module):
 
     rest = MistHelper(module)
 
-    # begin working on org-level WLANs
-    if module.params['level'] == "org":
+    # ### ##########################################################################################
+    # ### collect a list of the WLANs already present within the organization
+    # ### create a new object called 'sites' that will hold the sites returned from the API
+    # ### validate that the objects 'sites' is in list format, since we are about to loop over it
+    # ### ##########################################################################################
+    response = rest.get(f"orgs/{org_id}/wlans")
+    if response.status_code != 200:
+        module.fail_json(msg=f"Failed to receive information about the current wlans, here is the response information to help you debug : {response.info}")
 
-        # gather a list of wlans already created at the org-level
-        response = rest.get(f"orgs/{org_id}/wlans")
+    returned_wlans = response.json
+
+    if isinstance(returned_wlans, list):
+        pass
+    else:
+        module.fail_json(msg=f"The wlans returned from the API are not in a list format, contant Mist support: {returned_wlans}")
+
+    # ### ########################################################################
+    # ### # it's important to know if the WLAN is already provisioned.
+    # ### # we accomplish this task by creating a new dictionary
+    # ### #   with a k/v of 'provisioned' set to False. if the WLAN has already
+    # ### #   been provisioned, we'll flip this bit to True and store its ID
+    # ### ########################################################################
+    existing_wlans = dict()
+    existing_wlans['provisioned'] = False
+    existing_wlans['id'] = None
+    existing_wlans['template_id'] = None
+    for each in returned_wlans:
+        if each['ssid'] == module.params['ssid']:
+            existing_wlans['provisioned'] = True
+            existing_wlans['id'] = each['id']
+            try:
+                existing_wlans['template_id'] = each['template_id']
+            except KeyError:
+                pass
+
+    # ### #################################################################################
+    # ### # create an empty object to store configuration parameters, fed to it in the
+    # ### #   Ansible Module's parameters.
+    # ### # this is the python dictionary that will be converted to JSON before pushing
+    # ### #   to the Mist API.
+    # ### # this dictionary will undergo several facelifts to make it align perfectly to
+    # ### #   what mist is expecting.
+    # ### #################################################################################
+    module_parameters = dict()
+
+    # ### #################################################################################
+    # ### # set the key/value pairs of the parameters to a new object
+    # ### # iterate over the object, look to see if anything was entered, if there was
+    # ### #   something added by the user, append it to our empty dict
+    # ### # if someone wanted to tag a WLAN with an SSID, make sure vlan_enabled is set to
+    # ### #   True
+    # ### #################################################################################
+    parameters = module.params.items()
+    for key, value in parameters:
+        if key == 'vlan_id':
+            if value is not None:
+                module_parameters['vlan_enabled'] = True
+        if value is not None:
+            module_parameters[key] = value
+
+    # ### #################################################################################
+    # ### # pop off unnessesary baggage
+    # ### #################################################################################
+    module_parameters.pop('api_token')
+    module_parameters.pop('org_id')
+    try:
+        module_parameters.pop('site_id')
+    except KeyError:
+        pass
+
+    # ### ##########################################################################################
+    # ### # WLANs that belong to a Config Template
+    # ### # this is different than the Site level because of the different API endpoint.
+    # ### # will need to be updated later
+    # ### ##########################################################################################
+    if module_parameters['type'] == "template":
+
+        # ### ##########################################################################################
+        # ### collect a list of the templates already present within the organization
+        # ### create a new object called 'returned_templates' that will hold the templates returned
+        # ### validate that the objects 'returned_templates' is in list format
+        # ### ##########################################################################################
+        response = rest.get(f"orgs/{org_id}/templates")
         if response.status_code != 200:
             module.fail_json(msg=f"Failed to receive information about the current wlans, here is the response information to help you debug : {response.info}")
 
-        # save the output of our API call to a new object called sites
-        wlans = response.json
+        returned_templates = response.json
 
-        # check to see if the wlans object is a list, fail the module if the return payload is anything else
-        if isinstance(wlans, list):
+        if isinstance(returned_templates, list):
             pass
         else:
-            module.fail_json(msg=f"The wlans returned from the API are not in a list format, contant Mist support: {wlans}")
+            module.fail_json(msg=f"The wlans returned from the API are not in a list format, contant Mist support: {returned_templates}")
 
-        # set a new variable to false, flip it to true if a site already matches the name. used later on for quitting early
-        wlan = dict()
-        wlan['provisioned'] = False
-        wlan['id'] = None
-        for each in wlans:
-            if each['ssid'] == module.params['ssid']:
-                wlan['provisioned'] = True
-                wlan['id'] = each['id']
+        # ### ########################################################################
+        # ### # it's important to know if the Config Template is already provisioned.
+        # ### # we accomplish this task by creating a new dictionary
+        # ### #   with a k/v of 'provisioned' set to False. if the WLAN has already
+        # ### #   been provisioned, we'll flip this bit to True and store its ID
+        # ### ########################################################################
+        for each in returned_templates:
+            if each['name'] == module_parameters['template_name']:
+                module_parameters['template_id'] = each['id']
 
         # decide if it's appropriate to break out of the module based on our determination that the site does, or does not, exist
-        if module.params['state'] == "absent":
-            if wlan['provisioned'] is False:
+        if module_parameters['state'] == "absent":
+            # ### ##########################################################################################
+            # ### # if the site doesn't exist, the module will exit out
+            # ### # if the site does exist, the HTTP Method will be a DELETE
+            # ### ##########################################################################################
+            if existing_wlans['provisioned'] is False:
                 module.exit_json(changed=False, data="wlan does not exist, existing")
             else:
-                response = rest.delete(f"/orgs/{org_id}/wlans/{wlan['id']}")
+                response = rest.delete(f"/orgs/{org_id}/wlans/{existing_wlans['id']}")
                 module.exit_json(changed=True, data=response.json)
 
-        elif module.params['state'] == "present":
-            # create an empty dictionay
-            wlan_data = dict()
+        elif module_parameters['state'] == "present":
+            # ### ##########################################################################################
+            # ### # pop off the uneccessary values
+            # ### ##########################################################################################
+            module_parameters.pop('state')
+            module_parameters.pop('template_name')
+            module_parameters.pop('type')
 
-            # set the key/value pairs of the parameters to a new object
-            # iterate over the object, look to see if anything was entered
-            # if there was something added by the user, append it to our empty dict
-            parameters = module.params.items()
-            for key, value in parameters:
-                if value is not None:
-                    wlan_data[key] = value
-
-            if wlan['provisioned'] is False:
-                response = rest.post(f"/orgs/{org_id}/wlans", data=wlan_data)
+            # ### ##########################################################################################
+            # ### # if the site doesn't exist, the HTTP Method will be a POST
+            # ### # if the site already exists, the HTTP Method will be a PUT
+            # ### ##########################################################################################
+            if existing_wlans['provisioned'] is False:
+                response = rest.post(f"/orgs/{org_id}/wlans", data=module_parameters)
                 module.exit_json(changed=True, data=response.json)
             else:
-                response = rest.put(f"/orgs/{org_id}/wlans", data=wlan_data)
-                module.exit_json(changed=True, data=response.json)
+                # response = rest.put(f"/orgs/{org_id}/wlans", data=module_parameters)
+                module.exit_json(changed=False, data="WLAN already exists under this Template ID")
 
         else:
             module.exit_json(changed=False, data=response.json)
 
     # begin working on site-level WLANs
-    elif module.params['level'] == "site":
+    elif module.params['type'] == "site":
 
         try:
             site_id = module.params['site_id']

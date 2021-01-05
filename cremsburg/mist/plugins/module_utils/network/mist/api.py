@@ -595,10 +595,6 @@ class MistHelper:
             legacy_overds=dict(
                 required=False,
                 type='bool'),
-            level=dict(
-                required=False,
-                choices=['org', 'site'],
-                type='str'),
             limit_bcast=dict(
                 required=False,
                 type='bool'),
@@ -764,6 +760,16 @@ class MistHelper:
             state=dict(
                 required=False,
                 choices=['absent', 'present'],
+                type='str'),
+            template_id=dict(
+                required=False,
+                type='str'),
+            template_name=dict(
+                required=False,
+                type='str'),
+            type=dict(
+                required=False,
+                choices=['template', 'site'],
                 type='str'),
             use_eapol_v1=dict(
                 required=False,
