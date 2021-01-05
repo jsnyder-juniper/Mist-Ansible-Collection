@@ -5,3 +5,5 @@ cremsburg/mist/tests/*.json
 tests/terraform/
 cremsburg/mist/plugins/module_utils/network/mist/to_be_worked_on_later.json
 cremsburg/mist/plugins/module_utils/network/mist/full_wlan.json.jsonc
+cremsburg/mist/tests/todo_configtemplate.jsonc
+cremsburg/mist/tests/todo_wlan.jsonc

@@ -1,17 +1,17 @@
 ---
 - hosts: localhost
   tasks:
-    - name: Create a new org-level WLAN
+    - name: "Create a new Config Template WLAN"
       cremsburg.mist.mist_wlan:
         ssid: "Yorke"
         enabled: true
-        level: "site"
-        site_name: katy
+        type: "template"
+        template_name: "Redtail: Wireless"
         vlan_id: 15
         auth:
-            type: psk
-            psk: juniper123
-        band: both
+            type: "psk"
+            psk: "juniper123"
+        band: "both"
         schedule:
             enabled: true
             hours:

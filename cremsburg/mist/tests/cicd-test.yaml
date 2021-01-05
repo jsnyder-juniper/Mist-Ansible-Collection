@@ -2,35 +2,35 @@
 - hosts: localhost
   connection: local
   tasks:
-    - name: create a Site Group
+    - name: "create a Site Group"
       cremsburg.mist.mist_site_groups:
-        name: jenkins
-        state: present
+        name: "jenkins"
+        state: "present"
 
-    - name: create a site
+    - name: "create a site"
       cremsburg.mist.mist_site:
-        name: jenkins
-        address: 624 4th Ave, Titusville, FL 32780, USA
-        country_code: US
+        name: "jenkins"
+        address: "624 4th Ave, Titusville, FL 32780, USA"
+        country_code: "US"
         latlng:
           lat: 28.6047585
           lng: -80.815304
-        notes: this is a test
+        notes: "this is a test"
         sitegroups:
           - "jenkins"
-        state: present
+        state: "present"
 
-    - name: Create a new site-level WLAN
+    - name: "Create a new site-level WLAN"
       cremsburg.mist.mist_wlan:
         ssid: "jenkins-test"
         enabled: true
-        level: "site"
-        site_name: jenkins
+        type: "site"
+        site_name: "jenkins"
         vlan_id: 15
         auth:
-            type: psk
-            psk: juniper123
-        band: both
+            type: "psk"
+            psk: "juniper123"
+        band: "both"
         schedule:
             enabled: true
             hours:
@@ -38,52 +38,52 @@
                 tue: "20:30-20:45"
         state: "present"
 
-    - name: Delete our new site-level WLAN
+    - name: "Delete our new site-level WLAN"
       cremsburg.mist.mist_wlan:
         ssid: "jenkins-test"
-        level: "site"
-        site_name: jenkins
+        type: "site"
+        site_name: "jenkins"
         state: "absent"
 
-    - name: Delete our new site
+    - name: "Delete our new site"
       cremsburg.mist.mist_site:
-        name: jenkins
+        name: "jenkins"
         state: "absent"
 
-    - name: Delete our new Site Group
+    - name: "Delete our new Site Group"
       cremsburg.mist.mist_site_groups:
-        name: jenkins
+        name: "jenkins"
         state: "absent"
 
-    - name: configure a switch
+    - name: "configure a switch"
       cremsburg.mist.mist_wired:
-        name: Katy-SW1
-        site_name: Katy
+        name: "Katy-SW1"
+        site_name: "Katy"
         ip_config:
-          type: dhcp
-          network: default
+          type: "dhcp"
+          network: "default"
         oob_ip_config:
-          type: dhcp
-          network: default
+          type: "dhcp"
+          network: "default"
         networks:
-          - name: home
+          - name: "home"
             vlan_id: "91"
-          - name: devops
+          - name: "devops"
             vlan_id: "101"
         port_config:
-          - name: ge-0/0/0
-            profile: mist-ap
-          - name: ge-0/0/1
-            profile: home
+          - name: "ge-0/0/0"
+            profile: "mist-ap"
+          - name: "ge-0/0/1"
+            profile: "home"
         port_profiles:
-          - name: home
-            mode: access
+          - name: "home"
+            mode: "access"
             disabled: False
             port_network: "home"
             stp_edge: True
             poe_disabled: True
-          - name: mist-ap
-            mode: trunk
+          - name: "mist-ap"
+            mode: "trunk"
             all_networks: True
             disabled: False
             port_network: "home"
